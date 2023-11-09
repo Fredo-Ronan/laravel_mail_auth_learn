@@ -11,6 +11,12 @@ date_default_timezone_set('Asia/Jakarta');
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
+        body {
+            background: url('https://img.freepik.com/free-photo/abstract-blur-defocused-bookshelflibrary_1203-9640.jpg?w=900&t=st=1698697077~exp=1698697677~hmac=1a12d710da0136a68f348da615842a1d1f70266855cd129d10e3e012bf782d16');
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
         .dropdown-menu {
             background: rgba(255, 255, 255, 0.8);
             /* Mengatur latar belakang transparan */
@@ -37,6 +43,23 @@ date_default_timezone_set('Asia/Jakarta');
         .text-black {
             color: black;
         }
+
+        .title-container {
+            background-color: rgba(121, 235, 184, 0.7); 
+            padding-left: 2rem; 
+            padding-right: 2rem;
+            border-radius: 10px;
+        }
+
+        .main-container {
+            background-color: rgba(255, 255, 255, 0.8);
+            margin-top: 2rem;
+            margin-left: 5rem;
+            margin-right: 5rem;
+            padding: 1.5rem;
+            border-radius: 10px;
+            height: calc(100vh / 1.2);
+        }
     </style>
 </head>
 
@@ -49,17 +72,17 @@ date_default_timezone_set('Asia/Jakarta');
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul></ul>
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
+                <li class="nav-item">
                     <a class="nav-link" href="/">Home <span class="sronly"></span></a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item active">
                     <a class="nav-link" href="{{route('buku')}}">Buku Saya</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{route('pinjam')}}">Pinjam</a>
+                    <a class="nav-link" href="#">Pinjam</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{route('kembalikan')}}">Kembalikan</a>
+                    <a class="nav-link" href="#">Kembalikan</a>
                 </li>
             </ul>
             <ul class="navbar-nav ml-auto">
@@ -82,57 +105,51 @@ date_default_timezone_set('Asia/Jakarta');
                         </div>
                         <div class="dropdown-divider"></div>
                         <div>
-                            <a class="dropdown-item" href="#"><i class="fa fa-user"></i> Profile</a>
-                            <a class="dropdown-item" href="{{route('actionLogout') }}"><i class="fa fa-user"></i>
-                                Logout</a>
+                            <a class="dropdown-item" href="#">
+                                <i class="fa fa-user"></i> 
+                                Profile
+                            </a>
+                            <a class="dropdown-item" href="{{route('actionLogout') }}">
+                                <i class="fa fa-user"></i>
+                                Logout
+                            </a>
                         </div>
                     </div>
                 </li>
             </ul>
         </div>
     </nav>
-    <div id="carouselExampleIndicators" class="carousel slide" dataride="carousel" style="width: 100%; height: 86vh;">
-        <ol class="carousel-indicators">
-            <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-            <li data-target="#carouselExampleIndicators" data-slideto="1"></li>
-            <li data-target="#carouselExampleIndicators" data-slideto="2"></li>
-        </ol>
-        <div class="carousel-inner" style="width: 100%; height: 86vh;">
-            <div class="carousel-item active">
-                <img class="d-block w-100"
-                    src="https://img.freepik.com/free-photo/abstract-blur-defocused-bookshelflibrary_1203-9640.jpg?w=900&t=st=1698697077~exp=1698697677~hmac=1a12d710da0136a68f348da615842a1d1f70266855cd129d10e3e012bf782d16"
-                    alt="First slide">
-                <div class="carousel-caption">
-                    <h1><span class="text-black">Selamat datang <b>{{Auth::user()->username }}</b></span></h1>
+
+    <div>
+        <div class="main-container">
+            <div class="d-flex justify-content-center">
+                <div class="title-container mt-3">
+                    <h4>Edit Buku Saya</h4>
                 </div>
             </div>
-            <div class="carousel-item">
-                <img class="d-block w-100"
-                    src="https://img.freepik.com/free-photo/abstract-blur-defocused-bookshelflibrary_1203-9639.jpg?w=900&t=st=1698697351~exp=1698697951~hmac=6d779c3e84460af609e92bf69eb2650f1c3ceee769b184938f8435ac54f841e5"
-                    alt="Second slide">
-                <div class="carousel-caption">
-                    11
-                    <h1><span class="text-black">Selamat datang <b>{{Auth::user()->username }}</b></span></h1>
-                </div>
-            </div>
-            <div class="carousel-item">
-                <img class="d-block w-100"
-                    src="https://img.freepik.com/free-photo/abstract-blur-defocused-bookshelflibrary_1203-9642.jpg?w=900&t=st=1698697349~exp=1698697949~hmac=7088a9d4c117b844da9ad374e974e0e3a867a138cc5d3e6109560a2ee19040e3"
-                    alt="Third slide">
-                <div class="carousel-caption">
-                    <h1><span class="text-black">Selamat datang <b>{{Auth::user()->username }}</b></span></h1>
-                </div>
+
+            <div class="mt-4">
+                <form action="{{route('actionEdit')}}" method="post">
+                    @csrf
+                    <div class="col-md-6">
+                        <label><strong>Judul Buku</strong></label>
+                        <input type="text" class="form-control" name="judul" placeholder="Masukkan Judul Buku" value="{{$buku->judul}}">
+                    </div>
+                    <div class="col-md-6 mt-4">
+                        <label><strong>Penulis</strong></label>
+                        <input type="text" class="form-control" name="penulis" placeholder="Masukkan Penulis" value="{{$buku->penulis}}">
+                    </div>
+
+                    <input type="hidden" name="id_buku" value="{{$buku->id_buku}}">
+
+                    <div class="col-md-6 mt-4">
+                        <button type="submit" class="btn btn-primary">SIMPAN</button>
+                    </div>
+                </form>
             </div>
         </div>
-        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-            <span class="carousel-control-prev-icon" ariahidden="true"></span>
-            <span class="sr-only">Previous</span>
-        </a>
-        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-            <span class="carousel-control-next-icon" ariahidden="true"></span>
-            <span class="sr-only">Next</span>
-        </a>
     </div>
+    
     <!-- jQuery library -->
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>
     <!--Popper JS -->
@@ -140,9 +157,9 @@ date_default_timezone_set('Asia/Jakarta');
     <!-- Latest compiled JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        window.onload = function() {
-            // Menghapus riwayat perambanan
-            window.history.pushState({}, '', '/'); // Mengganti URL ke halaman login
-        }
+        // window.onload = function() {
+        //     // Menghapus riwayat perambanan
+        //     window.history.pushState({}, '', '/'); // Mengganti URL ke halaman login
+        // }
     </script>
 </body
